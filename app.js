@@ -39,4 +39,36 @@ app.post('/create', (req, res) => {
   );
 });
 
+app.post('/delete/:id', (req, res) => {
+  connection.query(
+    'DELETE FROM buahan WHERE id = ?',
+    [req.params.id],
+    (error, results) => {
+      res.redirect('/index');
+    }
+  );
+});
+
+app.get('/edit/:id', (req, res) => {
+  connection.query(
+    'SELECT * FROM buahan WHERE id = ?',
+    [req.params.id],
+    (error, results) => {
+      res.render('edit.ejs', {item: results[0]});
+    }
+  );
+});
+
+app.post('/update/:id', (req, res) => {
+
+  connection.query(
+    'UPDATE buahan SET name = ? WHERE id = ?',
+    [req.body.itemName,req.params.id],
+    (error, results) => {
+      res.redirect('/index');
+    }
+  );
+  
+});
+
 app.listen(3000);
